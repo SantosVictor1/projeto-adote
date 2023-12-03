@@ -17,3 +17,11 @@ Para executar o projeto, é necessário ter as seguintes ferramentas instaladas:
 - Docker-Compose
 - OpenJDK 17
 - Maven
+
+## Diretórios
+
+Existem 2 diretórios principais neste repositório.
+
+O de [IaC](./iac) que contém todos os arquivos necessários para criar o `EKS` e o `RDS`, na `AWS`, além de possuir também os manifestos utilizados para realizar o deploy da aplicação no cluster.
+
+O segundo diretório é o [adote-application](./adote-application/) que contém o código fonte da aplicação usada de teste.
