@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: adote-application
+  labels:
+    app: adote-application
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: adote-application
+      name: adote-application
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: adote-application
+        name: adote-application
+        service: adote-application
+    spec:
+      containers:
+        - name: adote-application
+          image: REGISTRY/REPOSITORY:VERSION
+          imagePullPolicy: Always
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: "prod"
+          envFrom:
+            - secretRef:
+                name: database-credentials
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP
+          resources:
+            requests:
+              cpu: 250m
+              memory: 512Mi
+            limits:
+              cpu: 500m
+              memory: 1Gi
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 60
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            timeoutSeconds: 40
